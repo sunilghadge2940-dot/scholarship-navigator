@@ -533,6 +533,7 @@ export type Database = {
       }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
       run_expiry_check: { Args: never; Returns: number }
+      system_deadline_check: { Args: never; Returns: number }
     }
     Enums: {
       app_role: "super_admin" | "editor" | "verifier" | "publisher"
