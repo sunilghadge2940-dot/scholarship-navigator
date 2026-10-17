@@ -39,7 +39,7 @@ export function ScholarshipCard({ s }: { s: PublicScholarship }) {
   );
 }
 
-export function EmptyCatalogue({ message }: { message?: string }) {
+export function EmptyCatalogue({ message }: { message?: string | undefined }) {
   return (
     <div className="rounded-xl border border-dashed bg-card/60 p-8 text-center">
       <p className="font-display text-lg">No verified listings here yet</p>

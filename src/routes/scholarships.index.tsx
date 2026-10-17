@@ -54,7 +54,7 @@ function ListPage() {
   const countryName = meta.countries.find((c) => c.code === f.country)?.name;
   const levelName = meta.levels.find((l) => l.code === f.level)?.name;
 
-  const Select = ({ label, value, onChange, options }: { label: string; value?: string; onChange: (v?: string) => void; options: { v: string; l: string }[] }) => (
+  const Select = ({ label, value, onChange, options }: { label: string; value?: string | undefined; onChange: (v?: string) => void; options: { v: string; l: string }[] }) => (
     <label className="block text-sm">
       <span className="mb-1 block font-semibold">{label}</span>
       <select value={value ?? ""} onChange={(e) => onChange(e.target.value || undefined)} className="h-10 w-full rounded-lg border bg-background px-3">
