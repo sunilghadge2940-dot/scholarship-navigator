@@ -4,6 +4,8 @@ import { ArrowRight, BadgeCheck, Search, ShieldCheck, FileSearch, Users } from "
 import { useState } from "react";
 import hero from "@/assets/hero-students.jpg";
 import { getHome, getMeta } from "@/lib/public.functions";
+import { getHomeResources } from "@/lib/resources.functions";
+import { ResourcesSection } from "@/components/site/resources-section";
 import { CATEGORIES } from "@/lib/scholarships";
 import { EmptyCatalogue, ScholarshipCard } from "@/components/site/scholarship-card";
 import { OfficialDisclaimer } from "@/components/site/layout";
@@ -11,6 +13,7 @@ import type { PublicScholarship } from "@/lib/scholarships";
 
 const metaQ = queryOptions({ queryKey: ["meta"], queryFn: () => getMeta(), staleTime: 3600_000 });
 const homeQ = queryOptions({ queryKey: ["home"], queryFn: () => getHome() });
+const homeResourcesQ = queryOptions({ queryKey: ["home-resources"], queryFn: () => getHomeResources() });
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -23,13 +26,14 @@ export const Route = createFileRoute("/")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  loader: ({ context }) => Promise.all([context.queryClient.ensureQueryData(metaQ), context.queryClient.ensureQueryData(homeQ)]),
+  loader: ({ context }) => Promise.all([context.queryClient.ensureQueryData(metaQ), context.queryClient.ensureQueryData(homeQ), context.queryClient.ensureQueryData(homeResourcesQ)]),
   component: Index,
 });
 
 function Index() {
   const { data: meta } = useSuspenseQuery(metaQ);
   const { data: home } = useSuspenseQuery(homeQ);
+  const { data: resources } = useSuspenseQuery(homeResourcesQ);
   const navigate = useNavigate();
   const [q, setQ] = useState("");
   const [country, setCountry] = useState("");
@@ -100,6 +104,8 @@ function Index() {
         <Rail title="Upcoming deadlines" items={home.deadlines} link={{ status: "open" }} />
         <Rail title="Latest scholarships" items={home.latest} link={{}} />
         <Rail title="Recently verified" items={home.verified} link={{}} hideEmpty={home.total === 0} />
+
+        <ResourcesSection items={resources} />
 
         <section>
           <h2 className="text-3xl font-semibold">Browse by category</h2>

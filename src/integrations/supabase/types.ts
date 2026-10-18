@@ -217,6 +217,68 @@ export type Database = {
           },
         ]
       }
+      resources: {
+        Row: {
+          country_code: string | null
+          created_at: string
+          created_by: string
+          description: string
+          education_levels: string[]
+          id: string
+          is_active: boolean
+          name: string
+          official_url: string
+          price_text: string
+          pricing: string
+          provider: string
+          type: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          country_code?: string | null
+          created_at?: string
+          created_by: string
+          description?: string
+          education_levels?: string[]
+          id?: string
+          is_active?: boolean
+          name: string
+          official_url: string
+          price_text?: string
+          pricing?: string
+          provider?: string
+          type?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          country_code?: string | null
+          created_at?: string
+          created_by?: string
+          description?: string
+          education_levels?: string[]
+          id?: string
+          is_active?: boolean
+          name?: string
+          official_url?: string
+          price_text?: string
+          pricing?: string
+          provider?: string
+          type?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resources_country_code_fkey"
+            columns: ["country_code"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
       saved_scholarships: {
         Row: {
           created_at: string
