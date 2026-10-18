@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { getMeta, listResources, type ResourceFilters } from "@/lib/public.functions";
+import { getMeta } from "@/lib/public.functions";
+import { listResources, type ResourceFilters } from "@/lib/resources.functions";
 import { EmptyResources, ResourceCard } from "@/components/site/resource-card";
 import { OfficialDisclaimer } from "@/components/site/layout";
 
