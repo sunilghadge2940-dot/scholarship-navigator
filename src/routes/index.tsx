@@ -13,6 +13,7 @@ import type { PublicScholarship } from "@/lib/scholarships";
 
 const metaQ = queryOptions({ queryKey: ["meta"], queryFn: () => getMeta(), staleTime: 3600_000 });
 const homeQ = queryOptions({ queryKey: ["home"], queryFn: () => getHome() });
+const homeResourcesQ = queryOptions({ queryKey: ["home-resources"], queryFn: () => getHomeResources() });
 
 export const Route = createFileRoute("/")({
   head: () => ({
