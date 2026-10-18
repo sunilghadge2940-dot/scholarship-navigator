@@ -19,6 +19,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ScholarshipsIndexRouteImport } from './routes/scholarships.index'
 import { Route as ScholarshipsSlugRouteImport } from './routes/scholarships.$slug'
+import { Route as AdminResourcesNewRouteImport } from './routes/admin.resources.new'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -70,6 +71,11 @@ const ScholarshipsSlugRoute = ScholarshipsSlugRouteImport.update({
   path: '/scholarships/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminResourcesNewRoute = AdminResourcesNewRouteImport.update({
+  id: '/admin/resources/new',
+  path: '/admin/resources/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -82,6 +88,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
   '/scholarships/': typeof ScholarshipsIndexRoute
+  '/admin/resources/new': typeof AdminResourcesNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -94,6 +101,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
   '/scholarships': typeof ScholarshipsIndexRoute
+  '/admin/resources/new': typeof AdminResourcesNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -107,6 +115,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
   '/scholarships/': typeof ScholarshipsIndexRoute
+  '/admin/resources/new': typeof AdminResourcesNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/scholarships/$slug'
     | '/scholarships/'
+    | '/admin/resources/new'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -133,6 +143,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/scholarships/$slug'
     | '/scholarships'
+    | '/admin/resources/new'
   id:
     | '__root__'
     | '/'
@@ -145,6 +156,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/scholarships/$slug'
     | '/scholarships/'
+    | '/admin/resources/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -158,6 +170,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   ScholarshipsSlugRoute: typeof ScholarshipsSlugRoute
   ScholarshipsIndexRoute: typeof ScholarshipsIndexRoute
+  AdminResourcesNewRoute: typeof AdminResourcesNewRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -232,6 +245,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScholarshipsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/resources/new': {
+      id: '/admin/resources/new'
+      path: '/admin/resources/new'
+      fullPath: '/admin/resources/new'
+      preLoaderRoute: typeof AdminResourcesNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -246,6 +266,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   ScholarshipsSlugRoute: ScholarshipsSlugRoute,
   ScholarshipsIndexRoute: ScholarshipsIndexRoute,
+  AdminResourcesNewRoute: AdminResourcesNewRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
