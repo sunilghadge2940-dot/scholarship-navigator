@@ -4,6 +4,8 @@ import { ArrowRight, BadgeCheck, Search, ShieldCheck, FileSearch, Users } from "
 import { useState } from "react";
 import hero from "@/assets/hero-students.jpg";
 import { getHome, getMeta } from "@/lib/public.functions";
+import { getHomeResources } from "@/lib/resources.functions";
+import { ResourcesSection } from "@/components/site/resources-section";
 import { CATEGORIES } from "@/lib/scholarships";
 import { EmptyCatalogue, ScholarshipCard } from "@/components/site/scholarship-card";
 import { OfficialDisclaimer } from "@/components/site/layout";
