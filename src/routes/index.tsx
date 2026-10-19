@@ -77,10 +77,12 @@ function Index() {
                 <button className="h-11 rounded-lg bg-primary px-6 text-sm font-semibold text-primary-foreground hover:bg-primary/90">Search</button>
               </div>
             </form>
-            <Link to="/resources" className="mt-3 inline-flex items-center gap-2 rounded-xl border bg-card px-5 py-3 text-sm font-semibold text-card-foreground shadow-card hover:shadow-lift">
-              <BookOpen className="h-4 w-4 text-primary" aria-hidden />
-              Books &amp; Courses
-            </Link>
+            <div className="mt-3 flex sm:justify-end">
+              <Link to="/resources" className="inline-flex items-center gap-2 rounded-xl border bg-card px-5 py-3 text-sm font-semibold text-card-foreground shadow-card hover:shadow-lift">
+                <BookOpen className="h-4 w-4 text-primary" aria-hidden />
+                Books &amp; Courses
+              </Link>
+            </div>
             <div className="mt-5 flex flex-wrap gap-2">
               {meta.levels.map((l) => (
                 <Link key={l.code} to="/scholarships" search={{ level: l.code }} className="rounded-full border border-ink-foreground/25 px-3 py-1.5 text-sm hover:bg-ink-foreground/10">
