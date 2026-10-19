@@ -20,3 +20,8 @@ Approved plan: .lovable/plan/studentschemehub-build-plan-2026-10-12.md
 
 ## Waiting on user
 - Email address of the person who should become the first Super Admin (after they sign up).
+
+## Current requests
+- [ ] Diagnose and fix the Vercel page-load failure after Git repository deployment.
+- [ ] Add Google account login and securely initialize the owner's admin account; profile requirements need clarification. Never store the supplied password in source code.
+- [ ] Clarify the requested lower placement of Books & Courses.
