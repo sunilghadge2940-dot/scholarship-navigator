@@ -5,8 +5,8 @@ import type { Database } from "@/integrations/supabase/types";
 export function publicClient() {
   // External hosts may configure only the browser-safe connection values.
   // Prefer runtime server values so Lovable drafts keep their isolated backend.
-  const url = process.env["SUPABASE_URL"] || import.meta.env.VITE_SUPABASE_URL;
-  const key = process.env["SUPABASE_PUBLISHABLE_KEY"] || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+  const url = process.env["SUPABASE_URL"] || import.meta.env["VITE_SUPABASE_URL"];
+  const key = process.env["SUPABASE_PUBLISHABLE_KEY"] || import.meta.env["VITE_SUPABASE_PUBLISHABLE_KEY"];
   if (!url || !key) {
     throw new Error("Database connection is not configured. Set SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY on the hosting provider, then redeploy.");
   }
