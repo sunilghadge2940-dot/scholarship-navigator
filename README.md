@@ -338,6 +338,34 @@ Build the project using clean, maintainable, scalable code. Start with the essen
 
 This project was built with [Lovable](https://lovable.dev).
 
+## Deploying on Vercel
+
+This is a full-stack TanStack Start application, not a static Vite website. The
+Vite configuration selects Nitro's Vercel adapter for external builds while
+Lovable keeps its managed deployment target.
+
+1. Import the connected Git repository into Vercel.
+2. Choose **Other** as the framework preset, use `bun run build` as the build
+   command, and leave the Output Directory override disabled. Nitro produces
+   Vercel's `.vercel/output` with both static assets and server functions.
+3. In Vercel **Project Settings → Environment Variables**, configure the same
+   public database connection used by this project for Production and Preview:
+   - `SUPABASE_URL` — server-side database API URL.
+   - `SUPABASE_PUBLISHABLE_KEY` — public/publishable API key, not an admin key.
+   - `VITE_SUPABASE_URL` — browser-facing database API URL.
+   - `VITE_SUPABASE_PUBLISHABLE_KEY` — the same publishable key for the browser.
+4. Redeploy after changing settings. Environment variables configured in Lovable
+   do not automatically become Vercel environment variables through Git sync.
+5. Check `/`, `/scholarships`, and `/resources`. If a page still fails, open
+   Vercel **Logs**, filter for errors, and inspect the failed request. Do not
+   share tokens, passwords, or secret values when reporting an error.
+
+The public read client prefers server runtime values and can fall back to the
+browser-safe values. Never use a privileged database key for public reads or
+put private credentials in a `VITE_` variable. External-host Google login needs
+separate redirect/integration verification; a successful page deployment alone
+does not establish that OAuth works there.
+
 ## Build with Lovable
 
 Continue developing this project in the [Lovable editor](https://lovable.dev/projects/cbfe00d8-f3a2-486c-817f-c5e6a8cce3a4).

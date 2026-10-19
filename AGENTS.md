@@ -15,3 +15,4 @@
 - Public pages read via server functions using the publishable client (RLS shows only published/expired). Why: SSR for SEO without privileged keys.
 - Deadline expiry runs as a daily SQL-only pg_cron job (`system_deadline_check`); UI also derives "Expired" from `closes_on`. Why: listings never appear open after deadline.
 - Countries and education levels are data rows, not code enums. Why: add countries without rebuilding.
+- External Vercel builds use Nitro's Vercel preset while Lovable retains its managed target; public reads prefer runtime connection settings with publishable-only build-time fallback. Why: Git deployments need server output and do not inherit Lovable's environment settings.
