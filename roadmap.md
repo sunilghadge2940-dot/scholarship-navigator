@@ -18,10 +18,7 @@ Approved plan: .lovable/plan/studentschemehub-build-plan-2026-10-12.md
 - [ ] Phase 4: student accounts, saved, tracking, recommendations, reminders
 - [ ] Phase 5: SEO landing pages, structured data, ad/partner slots
 
-## Waiting on user
-- Email address of the person who should become the first Super Admin (after they sign up).
-
 ## Current requests
 - [ ] Vercel: adapter and public connection fallback added and tested locally; external verification waits on the full deployment URL/runtime error and Vercel environment setup/redeploy.
-- [ ] Add Google account login and securely initialize the owner's admin account; profile requirements need clarification. Never store the supplied password in source code.
-- [ ] Clarify the requested lower placement of Books & Courses.
+- [x] Google + email sign-in, email confirmation off, owner Super Admin account, admin panel (user totals, listing counts, change password).
+- [x] Books & Courses moved below the homepage Search button.

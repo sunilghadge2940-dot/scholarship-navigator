@@ -1,12 +1,58 @@
 import { Link } from "@tanstack/react-router";
-import { GraduationCap, Info, Menu, X } from "lucide-react";
+import { GraduationCap, Info, LayoutDashboard, LogOut, Menu, UserRound, X } from "lucide-react";
 import { useState } from "react";
+import { useAuthMe, useSignOut } from "@/hooks/use-auth";
+import { isStaff } from "@/lib/roles";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const NAV = [
   { to: "/scholarships", label: "Scholarships" },
   { to: "/about", label: "How we verify" },
   { to: "/contact", label: "Contact" },
 ] as const;
+
+function AccountMenu() {
+  const { data: me, isPending } = useAuthMe();
+  const signOut = useSignOut();
+  if (isPending) return <span className="h-9 w-20" aria-hidden />;
+  if (!me) {
+    return (
+      <Button asChild size="sm">
+        <Link to="/auth">Sign in</Link>
+      </Button>
+    );
+  }
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="sm" className="gap-2" aria-label="Account menu">
+          <UserRound className="h-4 w-4" aria-hidden />
+          <span className="hidden max-w-[10rem] truncate sm:inline">{me.user.email}</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-56">
+        <DropdownMenuLabel className="truncate font-normal text-muted-foreground">{me.user.email}</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {isStaff(me.roles) && (
+          <DropdownMenuItem asChild>
+            <Link to="/admin"><LayoutDashboard className="mr-2 h-4 w-4" /> Admin panel</Link>
+          </DropdownMenuItem>
+        )}
+        <DropdownMenuItem onSelect={() => void signOut()}>
+          <LogOut className="mr-2 h-4 w-4" /> Sign out
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -19,16 +65,19 @@ export function SiteHeader() {
           </span>
           StudentScheme<span className="text-primary">Hub</span>
         </Link>
-        <nav className="hidden items-center gap-6 text-sm font-medium md:flex" aria-label="Main">
-          {NAV.map((n) => (
-            <Link key={n.to} to={n.to} className="text-foreground/75 hover:text-primary" activeProps={{ className: "text-primary" }}>
-              {n.label}
-            </Link>
-          ))}
-        </nav>
-        <button className="rounded-md p-2 md:hidden" aria-label={open ? "Close menu" : "Open menu"} onClick={() => setOpen(!open)}>
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        <div className="flex items-center gap-3 md:gap-6">
+          <nav className="hidden items-center gap-6 text-sm font-medium md:flex" aria-label="Main">
+            {NAV.map((n) => (
+              <Link key={n.to} to={n.to} className="text-foreground/75 hover:text-primary" activeProps={{ className: "text-primary" }}>
+                {n.label}
+              </Link>
+            ))}
+          </nav>
+          <AccountMenu />
+          <button className="rounded-md p-2 md:hidden" aria-label={open ? "Close menu" : "Open menu"} onClick={() => setOpen(!open)}>
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
       {open && (
         <nav className="border-t bg-background md:hidden" aria-label="Mobile">
