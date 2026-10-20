@@ -10,7 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as PrivacyRouteImport } from './routes/privacy'
@@ -19,6 +21,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ScholarshipsIndexRouteImport } from './routes/scholarships.index'
 import { Route as ScholarshipsSlugRouteImport } from './routes/scholarships.$slug'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AdminResourcesNewRouteImport } from './routes/admin.resources.new'
 
 const IndexRoute = IndexRouteImport.update({
@@ -26,9 +29,18 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -71,6 +83,11 @@ const ScholarshipsSlugRoute = ScholarshipsSlugRouteImport.update({
   path: '/scholarships/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AdminResourcesNewRoute = AdminResourcesNewRouteImport.update({
   id: '/admin/resources/new',
   path: '/admin/resources/new',
@@ -80,6 +97,7 @@ const AdminResourcesNewRoute = AdminResourcesNewRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/disclaimer': typeof DisclaimerRoute
   '/privacy': typeof PrivacyRoute
@@ -89,10 +107,12 @@ export interface FileRoutesByFullPath {
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
   '/scholarships/': typeof ScholarshipsIndexRoute
   '/admin/resources/new': typeof AdminResourcesNewRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/disclaimer': typeof DisclaimerRoute
   '/privacy': typeof PrivacyRoute
@@ -102,11 +122,14 @@ export interface FileRoutesByTo {
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
   '/scholarships': typeof ScholarshipsIndexRoute
   '/admin/resources/new': typeof AdminResourcesNewRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/disclaimer': typeof DisclaimerRoute
   '/privacy': typeof PrivacyRoute
@@ -116,12 +139,14 @@ export interface FileRoutesById {
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
   '/scholarships/': typeof ScholarshipsIndexRoute
   '/admin/resources/new': typeof AdminResourcesNewRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about'
+    | '/auth'
     | '/contact'
     | '/disclaimer'
     | '/privacy'
@@ -131,10 +156,12 @@ export interface FileRouteTypes {
     | '/scholarships/$slug'
     | '/scholarships/'
     | '/admin/resources/new'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/auth'
     | '/contact'
     | '/disclaimer'
     | '/privacy'
@@ -144,10 +171,13 @@ export interface FileRouteTypes {
     | '/scholarships/$slug'
     | '/scholarships'
     | '/admin/resources/new'
+    | '/admin'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/about'
+    | '/auth'
     | '/contact'
     | '/disclaimer'
     | '/privacy'
@@ -157,11 +187,14 @@ export interface FileRouteTypes {
     | '/scholarships/$slug'
     | '/scholarships/'
     | '/admin/resources/new'
+    | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
+  AuthRoute: typeof AuthRoute
   ContactRoute: typeof ContactRoute
   DisclaimerRoute: typeof DisclaimerRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -182,11 +215,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -245,6 +292,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScholarshipsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/admin/resources/new': {
       id: '/admin/resources/new'
       path: '/admin/resources/new'
@@ -255,9 +309,22 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
+  AuthRoute: AuthRoute,
   ContactRoute: ContactRoute,
   DisclaimerRoute: DisclaimerRoute,
   PrivacyRoute: PrivacyRoute,
