@@ -147,11 +147,11 @@ function ChangePassword({ hasPassword }: { hasPassword: boolean }) {
   const [confirm, setConfirm] = useState("");
   const [busy, setBusy] = useState(false);
 
-  const submit = async (e: React.FormEvent): Promise<unknown> => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (next.length < 8) return toast.error("New password must be at least 8 characters.");
-    if (next !== confirm) return toast.error("The new passwords don't match.");
-    if (next === current) return toast.error("Choose a password different from your current one.");
+    if (next.length < 8) { toast.error("New password must be at least 8 characters."); return; }
+    if (next !== confirm) { toast.error("The new passwords don't match."); return; }
+    if (next === current) { toast.error("Choose a password different from your current one."); return; }
     setBusy(true);
     const { data: u } = await supabase.auth.getUser();
     const email = u.user?.email;
@@ -159,11 +159,11 @@ function ChangePassword({ hasPassword }: { hasPassword: boolean }) {
     const check = email ? await supabase.auth.signInWithPassword({ email, password: current }) : { error: new Error("no email") };
     if (check.error) {
       setBusy(false);
-      return toast.error("Your current password is wrong.");
+      { toast.error("Your current password is wrong."); return; }
     }
     const { error } = await supabase.auth.updateUser({ password: next, current_password: current });
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     setCurrent("");
     setNext("");
     setConfirm("");
