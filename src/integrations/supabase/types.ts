@@ -367,6 +367,8 @@ export type Database = {
           entry_method: string
           first_approver_id: string | null
           id: string
+          image_approved: boolean
+          image_url: string | null
           name: string
           official_url: string | null
           opens_on: string | null
@@ -405,6 +407,8 @@ export type Database = {
           entry_method?: string
           first_approver_id?: string | null
           id?: string
+          image_approved?: boolean
+          image_url?: string | null
           name: string
           official_url?: string | null
           opens_on?: string | null
@@ -443,6 +447,8 @@ export type Database = {
           entry_method?: string
           first_approver_id?: string | null
           id?: string
+          image_approved?: boolean
+          image_url?: string | null
           name?: string
           official_url?: string | null
           opens_on?: string | null
