@@ -147,7 +147,7 @@ function ChangePassword({ hasPassword }: { hasPassword: boolean }) {
   const [confirm, setConfirm] = useState("");
   const [busy, setBusy] = useState(false);
 
-  const submit = async (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent): Promise<unknown> => {
     e.preventDefault();
     if (next.length < 8) return toast.error("New password must be at least 8 characters.");
     if (next !== confirm) return toast.error("The new passwords don't match.");
