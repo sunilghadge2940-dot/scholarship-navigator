@@ -2,12 +2,14 @@ import { queryOptions, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { BACKEND_ENABLED } from "@/lib/backend-switch";
 
 export type AuthMe = { user: User; roles: string[] } | null;
 
 export const authMeQuery = queryOptions({
   queryKey: ["auth-me"],
   queryFn: async (): Promise<AuthMe> => {
+    if (!BACKEND_ENABLED) return null;
     const { data } = await supabase.auth.getUser();
     const user = data.user;
     if (!user) return null;
