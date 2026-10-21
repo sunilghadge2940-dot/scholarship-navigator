@@ -57,7 +57,10 @@ function AuthPage() {
   };
 
   const google = async () => {
-    if (!BACKEND_ENABLED) return toast.info(SIGN_IN_OFF);
+    if (!BACKEND_ENABLED) {
+      toast.info(SIGN_IN_OFF);
+      return;
+    }
     setBusy(true);
     const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
     if (result.error) {
@@ -73,7 +76,10 @@ function AuthPage() {
 
   const signIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!BACKEND_ENABLED) return toast.info(SIGN_IN_OFF);
+    if (!BACKEND_ENABLED) {
+      toast.info(SIGN_IN_OFF);
+      return;
+    }
     setBusy(true);
     const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     setBusy(false);
@@ -87,7 +93,10 @@ function AuthPage() {
 
   const signUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!BACKEND_ENABLED) return toast.info(SIGN_IN_OFF);
+    if (!BACKEND_ENABLED) {
+      toast.info(SIGN_IN_OFF);
+      return;
+    }
     if (password.length < 8) {
       toast.error("Password must be at least 8 characters.");
       return;
