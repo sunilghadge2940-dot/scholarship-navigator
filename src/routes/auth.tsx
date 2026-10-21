@@ -11,6 +11,9 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { authMeQuery, useAuthMe } from "@/hooks/use-auth";
 import { isStaff } from "@/lib/roles";
+import { BACKEND_ENABLED } from "@/lib/backend-switch";
+
+const SIGN_IN_OFF = "Sign-in and account creation are currently turned off.";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -54,6 +57,7 @@ function AuthPage() {
   };
 
   const google = async () => {
+    if (!BACKEND_ENABLED) return toast.info(SIGN_IN_OFF);
     setBusy(true);
     const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
     if (result.error) {
@@ -69,6 +73,7 @@ function AuthPage() {
 
   const signIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!BACKEND_ENABLED) return toast.info(SIGN_IN_OFF);
     setBusy(true);
     const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     setBusy(false);
@@ -82,6 +87,7 @@ function AuthPage() {
 
   const signUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!BACKEND_ENABLED) return toast.info(SIGN_IN_OFF);
     if (password.length < 8) {
       toast.error("Password must be at least 8 characters.");
       return;

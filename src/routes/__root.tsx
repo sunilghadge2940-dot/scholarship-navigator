@@ -15,6 +15,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteFooter, SiteHeader } from "@/components/site/layout";
 import { Toaster } from "@/components/ui/sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { BACKEND_ENABLED } from "@/lib/backend-switch";
 
 function NotFoundComponent() {
   return (
@@ -99,6 +100,11 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
   useEffect(() => {
+    if (!BACKEND_ENABLED) {
+      // Sign-in is turned off: drop any session left in this browser (local only, no account changes).
+      void supabase.auth.signOut({ scope: "local" });
+      return;
+    }
     const { data } = supabase.auth.onAuthStateChange((event) => {
       if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
       router.invalidate();
