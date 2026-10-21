@@ -1,8 +1,9 @@
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
+import { BACKEND_ENABLED } from "./backend-switch";
 
 /** Read-only publishable client for public SSR reads (RLS: published/expired only). */
-export function publicClient() {
+export function connectedPublicClient() {
   // External hosts may configure only the browser-safe connection values.
   // Prefer runtime server values so Lovable drafts keep their isolated backend.
   const url = process.env["SUPABASE_URL"] || import.meta.env["VITE_SUPABASE_URL"];
@@ -21,4 +22,28 @@ export function publicClient() {
       },
     },
   });
+}
+
+/** Disconnected stand-in: every query resolves to an empty result without any network call. */
+function offlineQuery(): unknown {
+  let single = false;
+  const proxy: unknown = new Proxy(function () {}, {
+    get(_t, prop) {
+      if (prop === "then") {
+        return (res: (v: unknown) => unknown, rej: (e: unknown) => unknown) =>
+          Promise.resolve({ data: single ? null : [], count: 0, error: null }).then(res, rej);
+      }
+      if (prop === "single" || prop === "maybeSingle") single = true;
+      return () => proxy;
+    },
+  });
+  return proxy;
+}
+
+export function offlinePublicClient() {
+  return { from: () => offlineQuery() } as unknown as ReturnType<typeof connectedPublicClient>;
+}
+
+export function publicClient() {
+  return BACKEND_ENABLED ? connectedPublicClient() : offlinePublicClient();
 }

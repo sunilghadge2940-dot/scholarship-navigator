@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 const { createClient } = vi.hoisted(() => ({ createClient: vi.fn(() => ({})) }));
 vi.mock("@supabase/supabase-js", () => ({ createClient }));
-import { publicClient } from "@/lib/public.server";
+import { connectedPublicClient as publicClient, offlinePublicClient } from "@/lib/public.server";
 
 afterEach(() => {
   vi.unstubAllEnvs();
@@ -31,6 +31,16 @@ describe("Public database hosting configuration", () => {
   it("fails clearly before creating a client when configuration is missing", () => {
     for (const name of ["SUPABASE_URL", "SUPABASE_PUBLISHABLE_KEY", "VITE_SUPABASE_URL", "VITE_SUPABASE_PUBLISHABLE_KEY"]) vi.stubEnv(name, "");
     expect(() => publicClient()).toThrow("Database connection is not configured");
+    expect(createClient).not.toHaveBeenCalled();
+  });
+});
+describe("Disconnected database", () => {
+  it("returns empty results without creating a connection", async () => {
+    const sb = offlinePublicClient();
+    const list = await sb.from("scholarships").select("*", { count: "exact" }).eq("status", "published").range(0, 23);
+    expect(list).toEqual({ data: [], count: 0, error: null });
+    const one = await sb.from("scholarships").select("*").eq("slug", "x").maybeSingle();
+    expect(one.data).toBeNull();
     expect(createClient).not.toHaveBeenCalled();
   });
 });
